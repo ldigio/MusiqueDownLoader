@@ -13,6 +13,7 @@ function usage(){
 	printf "\t-i|--install          : affiche les instructions d'installation"
 }
 
+
 function install(){
 	printf "#############INSTALLATION############## \n"
 	printf "sudo apt udpate \n"
@@ -22,6 +23,9 @@ function install(){
 	printf "sudo chmod a+rx /usr/local/bin/youtube-dl \n"
 	printf "OR \n"
 	printf "sudo apt install youtube-dl \n"
+	printf "Attention il faut aussi ffmpeg:"
+	printf "sudo apt install ffmpeg"
+
 }
 
 function url_down(){
