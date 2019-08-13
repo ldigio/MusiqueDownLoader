@@ -1,7 +1,6 @@
 #!/bin/bash
 DD=$(date +"%m-%Y")
 ODIR=$DD"/%(title)s.%(ext)s" 
-$IN_URL=$1
 
 
 function usage(){
@@ -30,9 +29,9 @@ function install(){
 
 function url_down(){
 	if [[ -f $IN_URL ]]; then
-		youtube-dl --extract-audio --embed-thumbnail --add-metadata --audio-format mp3 --audio-quality 0 --output $ODIR --batch-file=$IN_URL
+		youtube-dl --extract-audio --embed-thumbnail --add-metadata --audio-format mp3 --audio-quality 0 --output $ODIR --batch-file="$IN_URL"
 	else
-		youtube-dl --extract-audio --embed-thumbnail --add-metadata --audio-format mp3 --audio-quality 0 --output $ODIR $IN_URL
+		youtube-dl --extract-audio --embed-thumbnail --add-metadata --audio-format mp3 --audio-quality 0 --output $ODIR "$IN_URL"
 	fi
 }
 
@@ -40,11 +39,20 @@ search_down(){
 	if [[ -f $IN_URL ]]; then
 		while IFS='' read -r line || [[ -n "$line" ]] && [[ ! -z "$line" ]]; do
 			youtube-dl --extract-audio --embed-thumbnail --add-metadata --audio-format mp3 --audio-quality 0 --output $ODIR "ytsearch:$line"
-		done < $IN_URL
+		done < "$IN_URL"
 	else
-		youtube-dl --extract-audio --embed-thumbnail --add-metadata --audio-format mp3 --audio-quality 0 --output $ODIR "ytsearch:"$IN_URL
+		youtube-dl --extract-audio --embed-thumbnail --add-metadata --audio-format mp3 --audio-quality 0 --output $ODIR "ytsearch:$IN_URL"
 	fi
 }
+
+
+test(){
+	if [[ ! -f $IN_URL ]]; then
+	echo $IN_URL
+	fi
+}
+
+
 
 while [[ $# -gt 0 ]]; do
 	key="$1"
