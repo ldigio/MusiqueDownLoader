@@ -1,16 +1,17 @@
 #!/bin/bash
 DD=$(date +"%m-%Y")
 ODIR=$DD"/%(title)s.%(ext)s" 
+name=$0
 
 
 function usage(){
-	printf "usage: ./MyYouDown [options] URL(URL or txt with URLs)"
+	printf "usage: $name [options] URL(URL or txt with URLs)"
 	printf "options: \n"
-	printf "\t-q|--quiet            : Mode silencieux. Attention a mettre en 1er. ;\n"
-	printf "\t-u|--url              : Telecharge une (1 url) ou plusieurs (fichier) musiques via URLs.;\n"
-	printf "\t-s|--search           : Fait une recherche youtube de l'entree. ;\n"
+	printf "\t-q|--quiet            : Mode silencieux. Attention a mettre en 1er. \n"
+	printf "\t-u|--url              : Telecharge une (1 url) ou plusieurs (fichier) musiques via URLs.\n"
+	printf "\t-s|--search           : Fait une recherche youtube de l'entree. \n"
+	printf "\t-i|--install          : affiche les instructions d'installation. \n"
 	printf "\t-h|--help             : affiche ce message.\n"
-	printf "\t-i|--install          : affiche les instructions d'installation"
 }
 
 
@@ -22,11 +23,12 @@ function install(){
 	printf "sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl \n"
 	printf "sudo chmod a+rx /usr/local/bin/youtube-dl \n"
 	printf "OR \n"
-	printf "sudo apt install youtube-dl \n"
-	printf "Attention il faut aussi ffmpeg:"
+	printf "sudo apt install youtube-dl \n \n"
+	printf "Attention il faut aussi ffmpeg:\n"
 	printf "sudo apt install ffmpeg \n \n"
-	printf "cp votreScript /usr/bin/    #pour l'intergrer a mes commandes linux"
-
+	printf "Pour l'intergrer dans mes commandes linux: (on peut aussi le renomer)\n"
+	printf "cp $name /usr/bin/  \n"
+	printf "chmod 770 $name  \n"
 }
 
 function url_down(){
