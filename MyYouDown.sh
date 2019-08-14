@@ -7,11 +7,12 @@ name=$0
 function usage(){
 	printf "usage: $name [options] URL(URL or txt with URLs)"
 	printf "options: \n"
-	printf "\t-q|--quiet            : Mode silencieux. Attention a mettre en 1er. \n"
-	printf "\t-u|--url              : Telecharge une (1 url) ou plusieurs (fichier) musiques via URLs.\n"
-	printf "\t-s|--search           : Fait une recherche youtube de l'entree. \n"
-	printf "\t-i|--install          : affiche les instructions d'installation. \n"
-	printf "\t-h|--help             : affiche ce message.\n"
+	printf "\t-q|--quiet                                       : Mode silencieux. Attention a mettre en 1er. \n"
+	printf "\t-u|--url                                         : Telecharge une (1 url) ou plusieurs (fichier) musiques via URLs.\n"
+	printf "\t-s|--search                                      : Fait une recherche youtube de l'entree. \n"
+	printf "\t-c|--couper val_debut(s) val_duration(s) fichier : Permet de couper la video entre debut et duration. \n"
+	printf "\t-i|--install                                     : affiche les instructions d'installation. \n"
+	printf "\t-h|--help                                        : affiche ce message.\n"
 }
 
 
@@ -27,8 +28,8 @@ function install(){
 	printf "Attention il faut aussi ffmpeg:\n"
 	printf "sudo apt install ffmpeg \n \n"
 	printf "Pour l'intergrer dans mes commandes linux: (on peut aussi le renomer)\n"
-	printf "cp $name /usr/bin/  \n"
-	printf "chmod 770 $name  \n"
+	printf "sudo cp $name /usr/bin/  \n"
+	printf "sudo chmod 777 $name  \n"
 }
 
 function url_down(){
@@ -70,8 +71,44 @@ function search_down(){
 
 
 function test(){
-	if [[ ! -f $IN_URL ]]; then
-	echo $IN_URL
+	if [[ -f $1 ]]; then
+		echo $1
+	else
+		echo non	
+	fi
+}
+
+function couper(){
+	if [[ $4 -eq 0 ]]; then
+		if [[ $2 -gt 1 ]] && [[ -f "$3" ]]; then
+		debut=$1
+		duration=$2
+		file="$3"
+		file_out=$(echo $file | cut -f1 -d.)
+		ext=$(echo $file | cut -f2 -d.)
+		file_out="$file_out""_cut.$ext"
+		ffmpeg -ss $debut -t $duration -i "$file" "$file_out" -y
+		#-ss debut -t duree -i inuput ouput -y(pour overwrite)
+		printf "$file_out created\n"
+		else
+			usage
+			exit
+		fi
+	else
+		if [[ $(($2-$1)) -gt 0 ]] && [[ -f "$3" ]]; then
+		debut=$1
+		duration=$2
+		file="$3"
+		file_out=$(echo $file | cut -f1 -d.)
+		ext=$(echo $file | cut -f2 -d.)
+		file_out="$file_out""_cut.$ext"
+		ffmpeg -loglevel quiet -ss $debut -t $duration -i "$file" "$file_out" -y
+		#-ss debut -t duree -i inuput ouput -y(pour overwrite)
+		printf "$file_out created\n"
+		else
+			usage
+			exit
+		fi		
 	fi
 }
 
@@ -104,6 +141,18 @@ while [[ $# -gt 0 ]]; do
 	    usage
 	    exit
 	    ;;
+	    -c|--couper)
+	    shift # past value
+	    if [[ -z $1  ]] || [[ -z $2  ]] || [[ -z "$3" ]]; then
+	    	usage
+	    	exit
+	    fi
+	    couper "$1" "$2" "$3" $q
+	    shift # past argument
+	    shift # past value
+	    shift
+		exit
+		;;
 	    -i|--install)
 	    install
 	    exit
