@@ -75,6 +75,10 @@ function test(){
 	fi
 }
 
+if [[ $# -eq 0 ]]; then
+	usage
+fi
+
 
 q=0
 while [[ $# -gt 0 ]]; do
