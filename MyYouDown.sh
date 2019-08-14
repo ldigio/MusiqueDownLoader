@@ -24,7 +24,8 @@ function install(){
 	printf "OR \n"
 	printf "sudo apt install youtube-dl \n"
 	printf "Attention il faut aussi ffmpeg:"
-	printf "sudo apt install ffmpeg"
+	printf "sudo apt install ffmpeg \n \n"
+	printf "cp votreScript /usr/bin/    #pour l'intergrer a mes commandes linux"
 
 }
 
