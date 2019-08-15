@@ -8,9 +8,10 @@ function usage(){
 	printf "usage: $name [options] URL(URL or txt with URLs)"
 	printf "options: \n"
 	printf "\t-q|--quiet                                       : Mode silencieux. Attention a mettre en 1er. \n"
-	printf "\t-u|--url                                         : Telecharge une (1 url) ou plusieurs (fichier) musiques via URLs.\n"
-	printf "\t-s|--search                                      : Fait une recherche youtube de l'entree. \n"
+	printf "\t-u|--url url|fichier                             : Telecharge une (1 url) ou plusieurs (fichier) musiques via URLs.\n"
+	printf "\t-s|--search title|fichier                        : Fait une recherche youtube de l'entree. \n"
 	printf "\t-c|--couper val_debut(s) val_duration(s) fichier : Permet de couper la video entre debut et duration. \n"
+	printf "\t-v|--video url|fichier                           : Telecharger la video"
 	printf "\t-i|--install                                     : affiche les instructions d'installation. \n"
 	printf "\t-h|--help                                        : affiche ce message.\n"
 }
@@ -66,7 +67,6 @@ function search_down(){
 			youtube-dl --extract-audio --embed-thumbnail --add-metadata --audio-format mp3 --audio-quality 0 --output $ODIR "ytsearch:$IN_URL"
 		fi
 	fi
-
 }
 
 
@@ -112,6 +112,18 @@ function couper(){
 	fi
 }
 
+video_down(){
+	if [[ -f $IN_URL ]]; then
+		echo "Ne fonctionne pas avec un fichier pour l'instant."
+	else
+		youtube-dl -F "$IN_URL"
+
+		echo "Choisir le format:"
+		read input
+		youtube-dl -f "$input" --output $ODIR "$IN_URL"
+	fi
+}
+
 if [[ $# -eq 0 ]]; then
 	usage
 fi
@@ -152,6 +164,12 @@ while [[ $# -gt 0 ]]; do
 	    shift # past value
 	    shift
 		exit
+		;;
+		-v|--video)
+		IN_URL="$2"
+		video_down
+		shift
+		shift
 		;;
 	    -i|--install)
 	    install
