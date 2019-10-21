@@ -1,6 +1,6 @@
 #!/bin/bash
 DD=$(date +"%m-%Y")
-ODIR=$DD"/%(title)s.%(ext)s" 
+ODIR=$DD"/%(title)s.%(ext)s"
 name=$0
 
 
@@ -11,7 +11,7 @@ function usage(){
 	printf "\t-u|--url url|fichier                             : Telecharge une (1 url) ou plusieurs (fichier) musiques via URLs.\n"
 	printf "\t-s|--search title|fichier                        : Fait une recherche youtube de l'entree. \n"
 	printf "\t-c|--couper val_debut(s) val_duration(s) fichier : Permet de couper la video entre debut et duration. \n"
-	printf "\t-v|--video url|fichier                           : Telecharger la video"
+	printf "\t-v|--video url|fichier                           : Telecharger la video. \n"
 	printf "\t-i|--install                                     : affiche les instructions d'installation. \n"
 	printf "\t-h|--help                                        : affiche ce message.\n"
 }
@@ -74,7 +74,7 @@ function test(){
 	if [[ -f $1 ]]; then
 		echo $1
 	else
-		echo non	
+		echo non
 	fi
 }
 
@@ -108,7 +108,7 @@ function couper(){
 		else
 			usage
 			exit
-		fi		
+		fi
 	fi
 }
 
@@ -144,7 +144,7 @@ while [[ $# -gt 0 ]]; do
 	    shift # past value
 	    ;;
 	    -u|--url)
-		IN_URL="$2"	 
+		IN_URL="$2"
 		url_down $q
 		shift # past argument
 	    shift # past value
